@@ -59,6 +59,7 @@ void encryptStep(ushort &step)
         }
         else
         {
+            std::cin.ignore(32767,'\n');
             break;
         }
     }
@@ -113,10 +114,25 @@ int main()
         ushort step;
         encryptStep(step);
         
-        std::cout << "Pleas enter a string (no spaces and punctuation marks)" << std::endl;
-        std::cin >> text;
-        std::cin.clear();
-        
+        std::cout << "Pleas enter a string (no spaces or punctuation marks):" << std::endl;
+        for(std::size_t i = 0; i < lenght; ++i)
+        {
+            text[i] = std::cin.get();
+            if((!(text[i] >= 'A' && text[i] <= 'Z')) && (!(text[i] >= 'a' && text[i] <= 'z')))
+            {
+                if(text[i] == '\n')
+                {
+                    text[i] = 0;
+                    break;
+                }
+                std::cin.ignore(32767,'\n');
+                i = 0;
+                std::cout << "Invalid input, please try again:" << std::endl;
+                continue;
+            }
+
+        }
+    
         coding(op, lenght, step, text);
 
         std::cout << "Recover string? y(yes) or n(no)" << std::endl;
